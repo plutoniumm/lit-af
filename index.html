@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test</title>
+
+  <style>
+    canvas {
+      border: 1px solid black;
+      position: relative;
+    }
+
+    /* red mix blend overlay on red canvas */
+    /* note canvas does not have ::after */
+  </style>
+</head>
+
+<body>
+  <div>
+    <canvas id="full" height="600" width="600"></canvas>
+    <canvas id="red" height="600" width="600"></canvas>
+    <canvas id="grn" height="600" width="600"></canvas>
+    <canvas id="blu" height="600" width="600"></canvas>
+  </div>
+
+  <script type="module" src="index.ts"></script>
+</body>
+
+</html>
