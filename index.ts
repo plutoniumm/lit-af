@@ -110,3 +110,64 @@ const canvas = document.querySelector('#full');
   // copy canvas to filter
   ctx.drawImage(canvas, 0, 0);
 });
+
+const red = document.querySelector('#red');
+const grn = document.querySelector('#grn');
+const blu = document.querySelector('#blu');
+
+// apply filters i.e channel -> fff or 000
+// for red, if red channel is f then fff else 000
+
+// red
+const ctx = red.getContext('2d');
+if (!ctx) throw new Error('Cannot get canvas context');
+const imageData = ctx.getImageData(0, 0, red.width, red.height);
+const data = imageData.data;
+for (let i = 0; i < data.length; i += 4) {
+  if (data[i] === 255) {
+    data[i] = 255;
+    data[i + 1] = 255;
+    data[i + 2] = 255;
+  } else {
+    data[i] = 0;
+    data[i + 1] = 0;
+    data[i + 2] = 0;
+  }
+}
+ctx.putImageData(imageData, 0, 0);
+
+// green
+const ctx2 = grn.getContext('2d');
+if (!ctx2) throw new Error('Cannot get canvas context');
+const imageData2 = ctx2.getImageData(0, 0, grn.width, grn.height);
+const data2 = imageData2.data;
+for (let i = 0; i < data2.length; i += 4) {
+  if (data2[i + 1] === 255) {
+    data2[i] = 255;
+    data2[i + 1] = 255;
+    data2[i + 2] = 255;
+  } else {
+    data2[i] = 0;
+    data2[i + 1] = 0;
+    data2[i + 2] = 0;
+  }
+}
+ctx2.putImageData(imageData2, 0, 0);
+
+// blue
+const ctx3 = blu.getContext('2d');
+if (!ctx3) throw new Error('Cannot get canvas context');
+const imageData3 = ctx3.getImageData(0, 0, blu.width, blu.height);
+const data3 = imageData3.data;
+for (let i = 0; i < data3.length; i += 4) {
+  if (data3[i + 2] === 255) {
+    data3[i] = 255;
+    data3[i + 1] = 255;
+    data3[i + 2] = 255;
+  } else {
+    data3[i] = 0;
+    data3[i + 1] = 0;
+    data3[i + 2] = 0;
+  }
+}
+ctx3.putImageData(imageData3, 0, 0);
