@@ -1,5 +1,6 @@
 {
 	"dependencies": {
+		"lit": "^3.0.0",
 		"qrcode": "^1.5.3",
 		"vite": "^4.5.0"
 	}
