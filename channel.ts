@@ -48,7 +48,7 @@ export class Channel {
         const g = channels[1].values[i][j] ? '0' : 'f';
         const b = channels[2].values[i][j] ? '0' : 'f';
 
-        row.push(`#${r}${g}${b}`);
+        row.push(`#${r || 'f'}${g || 'f'}${b || 'f'}`);
       }
       qrmatrix.push(row);
     }

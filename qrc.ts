@@ -1,5 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { query } from 'lit/decorators/query.js';
+
 import { Channel } from './channel.js';
 
 // function renderQRMatrix (qrmatrix: string[][]) {
@@ -64,20 +66,77 @@ import { Channel } from './channel.js';
 // };
 
 @customElement('m-qr')
-export class SimpleGreeting extends LitElement {
+export class MQR extends LitElement {
+  @query('#render') canvas: HTMLCanvasElement;
+  @property() src = "";
+  @property() r = "" as string | Channel;
+  @property() g = "" as string | Channel;
+  @property() b = "" as string | Channel;
+
   // Define scoped styles right with your component, in plain CSS
   static styles = css`
-    :host {
-      color: blue;
+    canvas{
+      background:#fff;
     }
-  `;
+    .cont {
+      background: #8888;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }`;
 
-  // Declare reactive properties
-  @property()
-  name?: string = 'World';
+  display (qrmatrix: string[][]) {
+    const canvas = this.renderRoot.querySelector('#render');
+    console.log(canvas);
 
-  // Render the UI as a function of component state
+    const ctx = canvas?.getContext('2d');
+    if (!ctx) throw new Error('Cannot get canvas context');
+
+    // get h,w from dom
+    let h = canvas.height;
+    let w = canvas.width;
+
+    qrmatrix.forEach((row, i) => {
+      row.forEach((color, j) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(
+          j * w / row.length,
+          i * h / qrmatrix.length,
+          w / row.length,
+          h / qrmatrix.length
+        );
+      });
+    });
+
+    return canvas;
+  }
+
+
+  firstUpdated () {
+    // super.connectedCallback()
+    this.r = new Channel('r', this.r);
+    this.g = new Channel('g', this.g);
+    this.b = new Channel('b', this.b);
+
+    const rgb = this.r.matToRGB([this.r, this.g, this.b]);
+    console.log(rgb);
+    this.display(rgb);
+  }
+
   render () {
-    return html`<p>Hello, ${this.name}!</p>`;
+    if (
+      !this.src ||
+      (this.r && this.g && this.b)
+    ) return html`<div>No renderables found</div>`;
+
+    return html`
+    <canvas id="full" height="600" width="600" style="display: none;"></canvas>
+    <div class="cont">
+      <canvas id="render" height="600" width="600"></canvas>
+      <input type="range" id="points" name="points" min="0" max="3">
+    </div>`;
   }
 };
